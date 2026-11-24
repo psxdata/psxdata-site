@@ -5,6 +5,14 @@
   // Static files only: no Worker script runs, Cloudflare serves public/ directly.
   "assets": { "directory": "./public" },
   "routes": [{ "pattern": "psxdata.org", "custom_domain": true }],
+  // Workers Logs, kept in the dashboard (Workers & Pages > psxdata-site > Logs).
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true,
+      "persist": true
+    }
+  },
   "workers_dev": false,
   "preview_urls": false
 }
