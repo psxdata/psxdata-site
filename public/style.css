@@ -48,16 +48,24 @@ body{margin:0;min-height:100dvh;background:var(--bg);color:var(--text);
 [data-theme="dark"] .release{border-color:var(--line-strong);background:var(--surface)}
 [data-theme="dark"] .release-tag{color:var(--text);background:var(--band);border:1px solid var(--line-strong)}
 [data-theme="dark"] .release .arrow{color:var(--muted)}
-[data-theme="dark"] .release:hover{border-color:var(--faint);background:var(--band);box-shadow:none}
+[data-theme="dark"] .release:hover{border-color:var(--hover-line);background:var(--hover-bg);box-shadow:0 4px 16px var(--hover-bg)}
+[data-theme="dark"] .release:hover .release-tag{color:var(--accent);background:var(--hover-bg);border-color:var(--hover-line)}
 [data-theme="dark"] .release:hover .arrow{color:var(--accent)}
 [data-theme="dark"] .indicator{box-shadow:0 0 0 1px var(--line-strong)}
 [data-theme="dark"] .flow-node.core{border-color:var(--faint)}
 [data-theme="dark"] .flow-node.core .flow-kicker{color:var(--faint)}
-[data-theme="dark"] .flow-node:hover{background:var(--band)}
-[data-theme="dark"] .grid-list div:hover,[data-theme="dark"] .band.alt .grid-list div:hover{background:var(--surface)}
 [data-theme="dark"] .via,[data-theme="dark"] .json .s{color:var(--muted)}
-[data-theme="dark"] .btn:hover{background:var(--band);border-color:var(--faint)}
-[data-theme="dark"] .theme-toggle:hover{background:var(--band);border-color:var(--faint)}
+/* Hover is where dark mode shows its mint: everything rests neutral and tints green under the pointer. */
+[data-theme="dark"]{--hover-bg:rgba(52,211,153,.09);--hover-line:rgba(52,211,153,.45)}
+[data-theme="dark"] .flow-node:hover{border-color:var(--hover-line);background:color-mix(in srgb,var(--surface) 90%,var(--mint))}
+[data-theme="dark"] .grid-list div:hover,[data-theme="dark"] .band.alt .grid-list div:hover{background:color-mix(in srgb,var(--bg) 90%,var(--mint))}
+[data-theme="dark"] .btn:hover{background:var(--hover-bg);border-color:var(--hover-line)}
+[data-theme="dark"] .theme-toggle:hover{background:var(--hover-bg);border-color:var(--hover-line)}
+[data-theme="dark"] .mover-list li:hover,[data-theme="dark"] tbody tr:hover,[data-theme="dark"] .faq summary:hover{background:var(--hover-bg)}
+[data-theme="dark"] .segmented button:hover,[data-theme="dark"] .tablist button:hover{background:var(--hover-bg)}
+[data-theme="dark"] .segmented button[aria-pressed="true"]:hover,[data-theme="dark"] .tablist button[aria-selected="true"]:hover{background:transparent}
+[data-theme="dark"] .flow-node.core:hover{border-color:var(--hover-line)}
+[data-theme="dark"] a:hover{text-decoration-color:var(--hover-line)}
 [data-theme="dark"] .tip{border-color:var(--line-strong)}
 [data-theme="dark"] .crosshair{background:var(--faint)}
 [data-theme="dark"] .dot{box-shadow:0 0 0 3px var(--surface)}
