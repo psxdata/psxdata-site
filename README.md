@@ -25,7 +25,7 @@ Cloudflare Workers Builds deploys `main` on every push. Settings in the Worker's
 
 ## Market snapshot
 
-The KSE-100 chart, movers, dividend table, REST example and headline numbers come from `public/data/snapshot.json`. `scripts/snapshot.py` builds it with the psxdata library, and `.github/workflows/snapshot.yml` reruns it every weekday after the PSX close and commits the result, which redeploys the site. To refresh it by hand:
+The KSE-100 and KMI-30 charts, movers, dividend table, REST example and headline numbers come from `public/data/snapshot.json`. `scripts/snapshot.py` builds it with the psxdata library, and `.github/workflows/snapshot.yml` reruns it every weekday after the PSX close and commits the result, which redeploys the site. To refresh it by hand:
 
 ```
 pip install psxdata

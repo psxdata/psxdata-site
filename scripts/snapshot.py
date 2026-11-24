@@ -34,8 +34,11 @@ def _num(value) -> float | None:
     return None if math.isnan(out) else out
 
 
-def kse100_history() -> pd.DataFrame:
-    df = psxdata.stocks("KSE100", start="2000-01-01", end=date.today().isoformat())
+INDICES = {"KSE100": "KSE-100", "KMI30": "KMI-30"}
+
+
+def index_history(symbol: str) -> pd.DataFrame:
+    df = psxdata.stocks(symbol, start="2000-01-01", end=date.today().isoformat())
     df = df[["date", "close"]].dropna()
     df["date"] = pd.to_datetime(df["date"])
     return df.drop_duplicates("date", keep="last").sort_values("date").reset_index(drop=True)
@@ -114,18 +117,22 @@ def fetch_json(url: str) -> dict | None:
 
 
 def main() -> None:
-    hist = kse100_history()
-    kse = psxdata.indices("KSE100")
+    indices, constituents, as_of = {}, {}, None
+    for symbol, label in INDICES.items():
+        hist = index_history(symbol)
+        constituents[symbol] = psxdata.indices(symbol)
+        indices[symbol] = {"label": label, **index_block(hist), "movers": movers(constituents[symbol])}
+        as_of = max(as_of or "", hist["date"].iloc[-1].strftime("%Y-%m-%d"))
     screener = psxdata.screener()
     pypi = fetch_json("https://pypistats.org/api/packages/psxdata/recent") or {}
     repo = fetch_json("https://api.github.com/repos/psxdata/psxdata") or {}
+    release = fetch_json("https://api.github.com/repos/psxdata/psxdata/releases/latest") or {}
 
     snapshot = {
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "as_of": hist["date"].iloc[-1].strftime("%Y-%m-%d"),
-        "kse100": index_block(hist),
-        "movers": movers(kse),
-        "dividends": dividend_table(screener, set(kse["symbol"])),
+        "as_of": as_of,
+        "indices": indices,
+        "dividends": dividend_table(screener, set(constituents["KSE100"]["symbol"])),
         "quote": quote_record("LUCK"),
         "stats": {
             "tickers": len(psxdata.tickers()),
@@ -133,11 +140,13 @@ def main() -> None:
             "sectors": int(screener["sector_name"].dropna().nunique()),
             "downloads_last_month": (pypi.get("data") or {}).get("last_month"),
             "github_stars": repo.get("stargazers_count"),
+            "history_since": indices["KSE100"]["since"],
         },
+        "release": {"tag": release.get("tag_name"), "url": release.get("html_url")} if release.get("tag_name") else None,
     }
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(snapshot, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(f"wrote {OUT} (as of {snapshot['as_of']})")
+    print(f"wrote {OUT} (as of {snapshot['as_of']}, {OUT.stat().st_size // 1024} KB)")
 
 
 if __name__ == "__main__":
