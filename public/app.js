@@ -49,7 +49,7 @@
     const ind = group.querySelector(".indicator");
     if (!ind || !active) return;
     if (instant) ind.style.transition = "none";
-    ind.style.width = active.offsetWidth + "px";
+    ind.style.width = active.offsetWidth + 2 + "px"; // +2: the indicator overlaps the container's 1px border on each side
     ind.style.transform = `translateX(${active.offsetLeft}px)`;
     if (instant) { void ind.offsetWidth; ind.style.transition = ""; }
     ind.classList.add("ready");

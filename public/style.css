@@ -51,7 +51,7 @@ body{margin:0;min-height:100dvh;background:var(--bg);color:var(--text);
 [data-theme="dark"] .release:hover{border-color:var(--hover-line);background:var(--hover-bg);box-shadow:0 4px 16px var(--hover-bg)}
 [data-theme="dark"] .release:hover .release-tag{color:var(--accent);background:var(--hover-bg);border-color:var(--hover-line)}
 [data-theme="dark"] .release:hover .arrow{color:var(--accent)}
-[data-theme="dark"] .indicator{box-shadow:0 0 0 1px var(--line-strong)}
+[data-theme="dark"] .indicator{border-color:var(--faint)}
 [data-theme="dark"] .flow-node.core{border-color:var(--faint)}
 [data-theme="dark"] .flow-node.core .flow-kicker{color:var(--faint)}
 [data-theme="dark"] .via,[data-theme="dark"] .json .s{color:var(--muted)}
@@ -145,13 +145,15 @@ a:hover{color:var(--accent);text-decoration-color:var(--mint-line)}
 .market-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:var(--s4)}
 
 /* Pill switchers (index switch and tools tabs) share one look, with a sliding indicator */
-.segmented,.tablist{position:relative;display:inline-flex;padding:3px;border:1px solid var(--line-strong);border-radius:999px;background:var(--band)}
+.segmented,.tablist{position:relative;display:inline-flex;padding:0;border:1px solid var(--line-strong);border-radius:999px;background:var(--band)}
 .segmented button,.tablist button{position:relative;z-index:1;font:500 13px/1 Geist,ui-sans-serif,system-ui,sans-serif;color:var(--muted);
-  background:transparent;border:0;border-radius:999px;padding:8px 16px;cursor:pointer;white-space:nowrap;transition:color var(--fast)}
+  background:transparent;border:0;border-radius:999px;padding:11px 16px;cursor:pointer;white-space:nowrap;transition:color var(--fast)}
 .segmented button:hover,.tablist button:hover{color:var(--accent)}
 .segmented button[aria-pressed="true"],.tablist button[aria-selected="true"]{color:var(--text)}
-.indicator{position:absolute;z-index:0;top:3px;bottom:3px;left:0;width:0;border-radius:999px;background:var(--surface);
-  box-shadow:0 0 0 1px var(--mint-line),0 2px 8px var(--mint-softer);transition:transform var(--med) var(--ease),width var(--med) var(--ease);opacity:0}
+/* The indicator sits on the container's own border (top/bottom -1px), so its top and bottom edges
+   merge with the container and only its rounded sides show. app.js widens it by 2px to match. */
+.indicator{position:absolute;z-index:0;top:-1px;bottom:-1px;left:-1px;width:0;box-sizing:border-box;border-radius:999px;background:var(--surface);
+  border:1px solid var(--mint-line);transition:transform var(--med) var(--ease),width var(--med) var(--ease);opacity:0}
 .indicator.ready{opacity:1}
 
 .market-kpis{display:flex;gap:var(--s5);margin:0}
@@ -234,8 +236,8 @@ h3{font-size:16px;line-height:1.35;font-weight:600;margin:0 0 var(--s2)}
 
 /* Tools tabs */
 .tabs .tablist{display:flex;width:max-content;max-width:100%;margin:0 auto var(--s5)}
-.tabs .tablist button{font-size:14px;padding:10px 18px}
-@media (max-width:520px){.tabs .tablist{width:100%}.tabs .tablist button{flex:1;padding:10px 6px;font-size:13px}}
+.tabs .tablist button{font-size:14px;padding:13px 18px}
+@media (max-width:520px){.tabs .tablist{width:100%}.tabs .tablist button{flex:1;padding:13px 6px;font-size:13px}}
 .panel{display:grid;gap:var(--s5);border:1px solid var(--line-strong);border-radius:14px;background:var(--surface);padding:var(--s5);box-shadow:var(--shadow)}
 .panel[hidden]{display:none}
 .panel.enter{animation:panel-in var(--med) var(--ease)}
