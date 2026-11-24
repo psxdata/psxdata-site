@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="36 46 248 248" width="248" height="248">
+  <defs>
+    <linearGradient id="psxdata-g" x1="0" y1="30" x2="0" y2="280" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6EE7B7"/>
+      <stop offset="1" stop-color="#10B981"/>
+    </linearGradient>
+  </defs>
+  <path d="M57.68 124.67C78.05 153.59 96.32 194.00 122.00 194.00C162.00 194.00 172.00 100.00 198.00 100.00C214.00 100.00 216.00 130.00 230.00 130.00C237.41 130.00 244.49 118.47 252.76 102.39Q259.06 89.88 265.95 102.06A118 118 0 1 1 45.14 126.95Q49.15 113.55 57.68 124.67Z" fill="url(#psxdata-g)"/>
+</svg>

@@ -23,6 +23,17 @@ Cloudflare Workers Builds deploys `main` on every push. Settings in the Worker's
 
 `wrangler.jsonc` attaches the custom domain `psxdata.org`; Cloudflare creates its DNS record and certificate on the first deploy.
 
+## Market snapshot
+
+The KSE-100 chart, movers, dividend table, REST example and headline numbers come from `public/data/snapshot.json`. `scripts/snapshot.py` builds it with the psxdata library, and `.github/workflows/snapshot.yml` reruns it every weekday after the PSX close and commits the result, which redeploys the site. To refresh it by hand:
+
+```
+pip install psxdata
+python scripts/snapshot.py
+```
+
+The page keeps working if the file is missing; it shows "unavailable" and the fallback numbers in the HTML.
+
 ## Design
 
 Colors, spacing and fonts (Geist, OFL licensed, in `public/fonts/`) match the waitlist and the MCP sign-in pages so every psxdata page looks like one product.

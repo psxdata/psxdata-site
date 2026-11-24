@@ -1,0 +1,44 @@
+name: Market snapshot
+
+# Refreshes public/data/snapshot.json after the PSX close (15:30 PKT = 10:30 UTC) on weekdays.
+# The commit to main triggers the Cloudflare deploy, so the site shows the new numbers.
+on:
+  schedule:
+    - cron: "30 11 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: snapshot
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install psxdata
+        run: pip install psxdata
+
+      - name: Build snapshot
+        run: python scripts/snapshot.py
+
+      - name: Commit if changed
+        run: |
+          git add public/data/snapshot.json
+          if git diff --cached --quiet; then
+            echo "No change"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Update market snapshot"
+          git push
