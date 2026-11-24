@@ -12,12 +12,14 @@
   --up:#0b7a52;--down:#b42318;--shadow:0 6px 24px rgba(16,60,40,.08);
   color-scheme:light;
 }
+/* Dark mode keeps mint as an accent only: near-neutral surfaces with the faintest green cast,
+   and much weaker washes than light mode, because green glows read far louder on black. */
 [data-theme="dark"]{
-  --bg:#0a0f0d;--band:#0e1512;--surface:#111916;--line:#1c2722;--line-strong:#2a3932;
-  --text:#eef5f1;--muted:#9fb0a8;--faint:#7e8f87;
-  --btn:#eef5f1;--btn-text:#0a0f0d;
-  --mint:#34d399;--accent:#4ade9f;--chart:#3ddc97;--chart-fill:rgba(52,211,153,.12);
-  --mint-wash:rgba(52,211,153,.14);--mint-soft:rgba(52,211,153,.12);--mint-softer:rgba(52,211,153,.06);--mint-line:rgba(52,211,153,.4);
+  --bg:#0b0d0c;--band:#0f1211;--surface:#131615;--line:#1f2321;--line-strong:#2e3431;
+  --text:#f1f3f2;--muted:#a3aba7;--faint:#848c88;
+  --btn:#f1f3f2;--btn-text:#0b0d0c;
+  --mint:#34d399;--accent:#5fd4a0;--chart:#3ddc97;--chart-fill:rgba(52,211,153,.10);
+  --mint-wash:rgba(52,211,153,.08);--mint-soft:rgba(52,211,153,.09);--mint-softer:rgba(52,211,153,.035);--mint-line:rgba(52,211,153,.28);
   --up:#3ddc97;--down:#f97066;--shadow:0 6px 24px rgba(0,0,0,.35);
   color-scheme:dark;
 }
@@ -30,6 +32,15 @@ body{margin:0;min-height:100dvh;background:var(--bg);color:var(--text);
   font:16px/1.6 Geist,ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased;transition:background-color var(--med),color var(--med)}
 ::selection{background:var(--mint-wash);color:inherit}
 [data-theme="dark"] ::selection{background:rgba(52,211,153,.3)}
+/* Dark mode: drop the decorative mint marks that pile up on black; hovers and highlights stay. */
+[data-theme="dark"] .band::before{display:none}
+[data-theme="dark"] .stats-band{background:none}
+[data-theme="dark"] .stats dd::after{opacity:.35}
+[data-theme="dark"] .grid-list dt::before{opacity:.5}
+[data-theme="dark"] .reliability li{border-top-color:var(--line-strong)}
+[data-theme="dark"] .flow>li:not(:last-child)::after{background:var(--line-strong)}
+[data-theme="dark"] .flow-node.core{border-color:var(--mint-line);box-shadow:none}
+[data-theme="dark"] .bubble{background:var(--surface);border-color:var(--line-strong)}
 a{color:inherit;text-decoration:underline;text-decoration-color:var(--line-strong);text-underline-offset:3px;
   transition:color var(--fast),text-decoration-color var(--fast)}
 a:hover{color:var(--accent);text-decoration-color:var(--mint-line)}
