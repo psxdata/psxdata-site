@@ -15,11 +15,11 @@
 /* Dark mode keeps mint as an accent only: near-neutral surfaces with the faintest green cast,
    and much weaker washes than light mode, because green glows read far louder on black. */
 [data-theme="dark"]{
-  --bg:#0b0d0c;--band:#0f1211;--surface:#131615;--line:#1f2321;--line-strong:#2e3431;
-  --text:#f1f3f2;--muted:#a3aba7;--faint:#848c88;
-  --btn:#f1f3f2;--btn-text:#0b0d0c;
-  --mint:#34d399;--accent:#5fd4a0;--chart:#3ddc97;--chart-fill:rgba(52,211,153,.10);
-  --mint-wash:rgba(52,211,153,.08);--mint-soft:rgba(52,211,153,.09);--mint-softer:rgba(52,211,153,.035);--mint-line:rgba(52,211,153,.28);
+  --bg:#0b0b0c;--band:#111113;--surface:#151517;--line:#232326;--line-strong:#333338;
+  --text:#f4f4f5;--muted:#a1a1aa;--faint:#85858e;
+  --btn:#f4f4f5;--btn-text:#0b0b0c;
+  --mint:#34d399;--accent:#6ee7b7;--chart:#34d399;--chart-fill:rgba(52,211,153,.07);
+  --mint-wash:rgba(52,211,153,.05);--mint-soft:rgba(52,211,153,.08);--mint-softer:rgba(52,211,153,.04);--mint-line:rgba(255,255,255,.16);
   --up:#3ddc97;--down:#f97066;--shadow:0 6px 24px rgba(0,0,0,.35);
   color-scheme:dark;
 }
@@ -41,6 +41,26 @@ body{margin:0;min-height:100dvh;background:var(--bg);color:var(--text);
 [data-theme="dark"] .flow>li:not(:last-child)::after{background:var(--line-strong)}
 [data-theme="dark"] .flow-node.core{border-color:var(--mint-line);box-shadow:none}
 [data-theme="dark"] .bubble{background:var(--surface);border-color:var(--line-strong)}
+/* Dark mode is neutral: mint stays on the chart, price moves, text selection, focus and hover text. */
+[data-theme="dark"] .hero{background:radial-gradient(ellipse 50% 360px at 50% -80px,rgba(255,255,255,.05),transparent 70%)}
+[data-theme="dark"] .cta{background:var(--band)}
+[data-theme="dark"] .stats dd::after,[data-theme="dark"] .grid-list dt::before{background:var(--faint);opacity:.5}
+[data-theme="dark"] .release{border-color:var(--line-strong);background:var(--surface)}
+[data-theme="dark"] .release-tag{color:var(--text);background:var(--band);border:1px solid var(--line-strong)}
+[data-theme="dark"] .release .arrow{color:var(--muted)}
+[data-theme="dark"] .release:hover{border-color:var(--faint);background:var(--band);box-shadow:none}
+[data-theme="dark"] .release:hover .arrow{color:var(--accent)}
+[data-theme="dark"] .indicator{box-shadow:0 0 0 1px var(--line-strong)}
+[data-theme="dark"] .flow-node.core{border-color:var(--faint)}
+[data-theme="dark"] .flow-node.core .flow-kicker{color:var(--faint)}
+[data-theme="dark"] .flow-node:hover{background:var(--band)}
+[data-theme="dark"] .grid-list div:hover,[data-theme="dark"] .band.alt .grid-list div:hover{background:var(--surface)}
+[data-theme="dark"] .via,[data-theme="dark"] .json .s{color:var(--muted)}
+[data-theme="dark"] .btn:hover{background:var(--band);border-color:var(--faint)}
+[data-theme="dark"] .theme-toggle:hover{background:var(--band);border-color:var(--faint)}
+[data-theme="dark"] .tip{border-color:var(--line-strong)}
+[data-theme="dark"] .crosshair{background:var(--faint)}
+[data-theme="dark"] .dot{box-shadow:0 0 0 3px var(--surface)}
 a{color:inherit;text-decoration:underline;text-decoration-color:var(--line-strong);text-underline-offset:3px;
   transition:color var(--fast),text-decoration-color var(--fast)}
 a:hover{color:var(--accent);text-decoration-color:var(--mint-line)}
