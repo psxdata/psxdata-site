@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "psxdata-site",
+  "compatibility_date": "2026-11-01",
+  // Static files only: no Worker script runs, Cloudflare serves public/ directly.
+  "assets": { "directory": "./public" },
+  "routes": [{ "pattern": "psxdata.org", "custom_domain": true }],
+  "workers_dev": false,
+  "preview_urls": false
+}

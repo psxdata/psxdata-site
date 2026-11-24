@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>psxdata: free Pakistan Stock Exchange data for Python, HTTP and Claude</title>
+<meta name="description" content="Free, open-source Pakistan Stock Exchange data. Historical prices, live quotes, KSE-100 constituents, sectors, screener and fundamentals, from Python, a REST API or Claude.">
+<link rel="canonical" href="https://psxdata.org/">
+<meta property="og:title" content="psxdata: free PSX data">
+<meta property="og:description" content="Pakistan Stock Exchange data from Python, a REST API or Claude. Free and open source.">
+<meta property="og:url" content="https://psxdata.org/">
+<meta property="og:type" content="website">
+<link rel="preload" href="/fonts/Geist-Variable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="/style.css">
+<script src="/copy.js" defer></script>
+</head>
+<body class="landing">
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <div class="inner bar">
+    <a class="wordmark" href="/">psxdata</a>
+    <nav aria-label="Main">
+      <ul class="nav">
+        <li><a href="https://docs.psxdata.org">Docs</a></li>
+        <li><a href="https://github.com/psxdata">GitHub</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="band hero">
+    <div class="inner">
+      <h1>Pakistan Stock Exchange data, one line of Python away.</h1>
+      <p class="lede">psxdata is a free, open-source library for PSX data: historical prices, live quotes, KSE-100 constituents, sectors, the screener and company fundamentals. Use it from Python, over HTTP, or by asking Claude.</p>
+
+      <div class="install">
+        <code class="mono" id="install-cmd">pip install psxdata</code>
+        <button type="button" class="copy" data-copy="install-cmd">Copy</button>
+        <span class="copy-status visually-hidden" role="status" aria-live="polite"></span>
+      </div>
+
+      <figure class="code">
+        <figcaption class="mark">quickstart.py</figcaption>
+<pre class="mono"><code><span class="k">import</span> psxdata
+
+<span class="c"># Daily prices for a stock, as a pandas DataFrame</span>
+df = psxdata.stocks(<span class="s">"ENGRO"</span>, start=<span class="s">"2024-01-01"</span>, end=<span class="s">"2024-12-31"</span>)
+
+<span class="c"># Live quote, KSE-100 constituents, all 37 sectors</span>
+psxdata.quote(<span class="s">"LUCK"</span>)
+psxdata.indices(<span class="s">"KSE100"</span>)
+psxdata.sectors()</code></pre>
+      </figure>
+
+      <p class="actions">
+        <a class="btn primary" href="https://docs.psxdata.org/sdk/getting-started">Get started</a>
+        <a class="btn" href="https://github.com/psxdata/psxdata">View on GitHub</a>
+      </p>
+    </div>
+  </section>
+
+  <section class="band alt" id="ways" aria-labelledby="ways-h">
+    <div class="inner">
+      <h2 id="ways-h">Three ways to use it</h2>
+      <p class="sub">Same data underneath. Pick the one that fits how you work.</p>
+      <ol class="ways">
+        <li>
+          <h3>Python library</h3>
+          <p>Install from PyPI and get pandas DataFrames back. Built-in caching, retries and proxy support. Python 3.11+.</p>
+          <p class="links"><a href="https://docs.psxdata.org/sdk/getting-started">Getting started</a><a href="https://pypi.org/project/psxdata/">PyPI</a></p>
+        </li>
+        <li>
+          <h3>REST API</h3>
+          <p>Plain JSON over HTTP for any language or spreadsheet. Stocks, quotes, history, indices, sectors, screener and more. Free, 60 requests a minute.</p>
+          <p class="links"><a href="https://docs.psxdata.org/rest-api/introduction">API docs</a></p>
+        </li>
+        <li>
+          <h3>Claude, through MCP</h3>
+          <p>Ask questions in plain English and Claude answers with the numbers. Runs locally in Docker as a Claude Code plugin or Claude Desktop extension. A hosted, no-install version is invite-only for now.</p>
+          <p class="links"><a href="https://docs.psxdata.org/mcp/introduction">How it works</a><a href="https://docs.psxdata.org/mcp/setup">Set it up</a></p>
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="band" id="data" aria-labelledby="data-h">
+    <div class="inner">
+      <h2 id="data-h">What data you get</h2>
+      <dl class="coverage">
+        <div><dt>Historical prices</dt><dd>Daily open, high, low, close and volume for any listed stock.</dd></div>
+        <div><dt>Live quotes</dt><dd>The current market board for a ticker.</dd></div>
+        <div><dt>Indices</dt><dd>KSE-100, KSE-30, KMI-30 and others, with each stock's weight.</dd></div>
+        <div><dt>Sectors</dt><dd>All 37 sectors with their aggregates and member stocks.</dd></div>
+        <div><dt>Screener</dt><dd>Price, P/E, dividend yield and one-year change across the market.</dd></div>
+        <div><dt>Fundamentals</dt><dd>The financial reports each company has filed.</dd></div>
+        <div><dt>Debt market</dt><dd>TFCs, sukuks and other listed debt instruments.</dd></div>
+        <div><dt>Margin-eligible stocks</dt><dd>The current list of eligible scrips.</dd></div>
+      </dl>
+      <p class="limits"><strong>Good to know.</strong> Data comes from the exchange's public website. Quotes aren't tick by tick, prices aren't adjusted for splits or bonus shares, and nothing here is investment advice.</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="inner bar">
+    <span class="wordmark small">psxdata</span>
+    <ul class="nav">
+      <li><a href="https://docs.psxdata.org">Docs</a></li>
+      <li><a href="https://github.com/psxdata">GitHub</a></li>
+      <li><a href="https://pypi.org/project/psxdata/">PyPI</a></li>
+    </ul>
+  </div>
+  <p class="inner fine">MIT licensed. Not affiliated with the Pakistan Stock Exchange.</p>
+</footer>
+</body>
+</html>
