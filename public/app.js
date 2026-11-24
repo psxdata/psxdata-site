@@ -28,11 +28,37 @@
   /* ---------- Theme toggle ---------- */
   const root = document.documentElement;
   const toggle = document.getElementById("theme-toggle");
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
   function syncToggle() {
     const next = root.dataset.theme === "dark" ? "light" : "dark";
     toggle.setAttribute("aria-label", `Switch to ${next} theme`);
     toggle.title = `Switch to ${next} theme`;
+    themeMeta.content = root.dataset.theme === "dark" ? "#0a0f0d" : "#f6faf8";
   }
+
+  /* ---------- Small animation helpers ---------- */
+  // Restart a CSS animation class on an element (remove, force reflow, add back).
+  const replay = (el, cls) => {
+    if (!el) return;
+    el.classList.remove(cls);
+    void el.offsetWidth;
+    el.classList.add(cls);
+  };
+  // Slide a pill indicator under the active button of a switcher.
+  function moveIndicator(group, active, instant) {
+    const ind = group.querySelector(".indicator");
+    if (!ind || !active) return;
+    if (instant) ind.style.transition = "none";
+    ind.style.width = active.offsetWidth + "px";
+    ind.style.transform = `translateX(${active.offsetLeft}px)`;
+    if (instant) { void ind.offsetWidth; ind.style.transition = ""; }
+    ind.classList.add("ready");
+  }
+  const activeIn = (group) => group.querySelector('[aria-pressed="true"],[aria-selected="true"]');
+  const placeAll = () => document.querySelectorAll(".segmented,.tablist").forEach((g) => moveIndicator(g, activeIn(g), true));
+  placeAll();
+  window.addEventListener("resize", placeAll);
+  if (document.fonts) document.fonts.ready.then(placeAll);
   toggle.addEventListener("click", () => {
     root.dataset.theme = root.dataset.theme === "dark" ? "light" : "dark";
     try { localStorage.setItem("theme", root.dataset.theme); } catch (e) {}
@@ -80,7 +106,7 @@
     chart.innerHTML =
       `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">` +
       ticks.map((t) => `<line class="grid" x1="0" x2="${W}" y1="${(yPct(t) * H / 100).toFixed(1)}" y2="${(yPct(t) * H / 100).toFixed(1)}"/>`).join("") +
-      `<path class="area" d="${line}L${W},${H}L0,${H}Z"/><path class="line" d="${line}"/></svg>` +
+      `<path class="area" d="${line}L${W},${H}L0,${H}Z"/><path class="line" pathLength="1" d="${line}"/></svg>` +
       ticks.map((t) => `<span class="grid-label" style="top:${yPct(t)}%">${intf.format(Math.round(t))}</span>`).join("") +
       `<div class="crosshair" hidden></div><div class="dot" hidden></div><div class="tip" hidden></div>` +
       `<span class="visually-hidden" aria-live="polite"></span>`;
@@ -142,10 +168,17 @@
 
   /* ---------- Index switcher ---------- */
   let snap = null;
-  function showIndex(key) {
+  function showIndex(key, animate) {
     const idx = snap.indices[key];
     if (!idx) return;
-    document.querySelectorAll(".segmented button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.index === key)));
+    const group = document.querySelector(".segmented");
+    group.querySelectorAll("button").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.index === key)));
+    moveIndicator(group, activeIn(group), !animate);
+    if (animate) {
+      replay(document.querySelector(".market-level"), "swap");
+      replay(document.querySelector(".market-kpis"), "swap");
+      document.querySelectorAll(".mover-list").forEach((l) => replay(l, "swap"));
+    }
     document.querySelectorAll("[data-idx]").forEach((el) => {
       const v = idx[el.dataset.idx];
       if (v == null) return;
@@ -158,7 +191,9 @@
     fillMovers(idx.movers);
   }
   document.querySelectorAll(".segmented button").forEach((b) =>
-    b.addEventListener("click", () => snap && showIndex(b.dataset.index)));
+    b.addEventListener("click", () => {
+      if (snap && b.getAttribute("aria-pressed") !== "true") showIndex(b.dataset.index, true);
+    }));
 
   function fillMovers(movers) {
     const row = (m) => {
@@ -226,14 +261,38 @@
   /* ---------- Tools tabs (WAI-ARIA tabs: arrow keys, Home and End) ---------- */
   const tabs = [...document.querySelectorAll('[role="tab"]')];
   function select(tab, focus) {
+    if (tab.getAttribute("aria-selected") === "true") { if (focus) tab.focus(); return; }
     tabs.forEach((t) => {
       const on = t === tab;
       t.setAttribute("aria-selected", String(on));
       t.tabIndex = on ? 0 : -1;
-      document.getElementById(t.getAttribute("aria-controls")).hidden = !on;
+      const panel = document.getElementById(t.getAttribute("aria-controls"));
+      panel.hidden = !on;
+      if (on) replay(panel, "enter");
     });
+    moveIndicator(tab.parentElement, tab, false);
     if (focus) tab.focus();
   }
+
+  /* ---------- FAQ: animate open and close of each <details> ---------- */
+  const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)");
+  document.querySelectorAll(".faq details").forEach((d) => {
+    const body = d.querySelector(".faq-body");
+    let anim = null;
+    d.querySelector("summary").addEventListener("click", (e) => {
+      if (reduceMotion.matches || !body.animate) return; // let the browser toggle instantly
+      e.preventDefault();
+      if (anim) anim.cancel();
+      const opening = !d.open;
+      if (opening) d.open = true;
+      const full = body.scrollHeight;
+      const frames = opening
+        ? [{ height: "0px", opacity: 0 }, { height: full + "px", opacity: 1 }]
+        : [{ height: full + "px", opacity: 1 }, { height: "0px", opacity: 0 }];
+      anim = body.animate(frames, { duration: 240, easing: "cubic-bezier(.2,.7,.2,1)" });
+      anim.onfinish = () => { anim = null; if (!opening) d.open = false; };
+    });
+  });
   tabs.forEach((tab, i) => {
     tab.addEventListener("click", () => select(tab, false));
     tab.addEventListener("keydown", (e) => {

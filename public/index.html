@@ -60,7 +60,7 @@
       <a class="release" href="https://github.com/psxdata/psxdata/releases/latest" data-href="release.url">
         <span class="release-tag" data-stat="release.tag">New release</span>
         <span>See what's new</span>
-        <span aria-hidden="true">→</span>
+        <span class="arrow" aria-hidden="true">→</span>
       </a>
       <h1>Free, reliable data for the Pakistan Stock Exchange.</h1>
       <p class="lede">psxdata is a family of open-source tools that turns the exchange's public data into clean, checked tables. Use it from Python, from any language over HTTP, or just ask Claude.</p>
@@ -77,6 +77,7 @@
         <div class="market-main">
           <div class="market-top">
             <div class="segmented" role="group" aria-label="Choose an index">
+              <span class="indicator" aria-hidden="true"></span>
               <button type="button" data-index="KSE100" aria-pressed="true">KSE-100</button>
               <button type="button" data-index="KMI30" aria-pressed="false">KMI-30</button>
             </div>
@@ -135,6 +136,7 @@
     <div class="wrap wide">
       <div class="tabs">
         <div class="tablist" role="tablist" aria-label="psxdata tools">
+          <span class="indicator" aria-hidden="true"></span>
           <button role="tab" id="tab-py" aria-controls="panel-py" aria-selected="true">Python library</button>
           <button role="tab" id="tab-rest" aria-controls="panel-rest" aria-selected="false" tabindex="-1">REST API</button>
           <button role="tab" id="tab-claude" aria-controls="panel-claude" aria-selected="false" tabindex="-1">Claude (MCP)</button>
@@ -270,12 +272,12 @@
     </div>
     <div class="wrap">
       <div class="faq">
-        <details><summary>Is it really free?</summary><p>Yes. The library, the API and the MCP server are free and MIT licensed. There's no paid tier. The hosted API is rate limited to 60 requests a minute per IP so it stays free for everyone.</p></details>
-        <details><summary>Is this official PSX data?</summary><p>psxdata isn't affiliated with the Pakistan Stock Exchange. It reads the data the exchange publishes on its public website and tidies it up. For anything that matters, check against the exchange.</p></details>
-        <details><summary>How fresh is the data?</summary><p>Quotes and the screener follow the exchange's market board, which updates during trading hours but isn't tick by tick. Historical prices are daily, up to the last close.</p></details>
-        <details><summary>Are prices adjusted for splits and dividends?</summary><p>No. Prices are as the exchange reports them, not adjusted for splits, bonus shares or dividends. Keep that in mind for long backtests.</p></details>
-        <details><summary>Can I use it in a commercial project?</summary><p>The code is MIT licensed, so yes. The underlying data comes from the exchange, so check its terms for your use.</p></details>
-        <details><summary>Which tool should I start with?</summary><p>Writing Python? Use the library. Building an app or a spreadsheet in another language? Use the REST API. Not a programmer? Connect it to Claude and ask questions.</p></details>
+        <details><summary>Is it really free?</summary><div class="faq-body"><p>Yes. The library, the API and the MCP server are free and MIT licensed. There's no paid tier. The hosted API is rate limited to 60 requests a minute per IP so it stays free for everyone.</p></div></details>
+        <details><summary>Is this official PSX data?</summary><div class="faq-body"><p>psxdata isn't affiliated with the Pakistan Stock Exchange. It reads the data the exchange publishes on its public website and tidies it up. For anything that matters, check against the exchange.</p></div></details>
+        <details><summary>How fresh is the data?</summary><div class="faq-body"><p>Quotes and the screener follow the exchange's market board, which updates during trading hours but isn't tick by tick. Historical prices are daily, up to the last close.</p></div></details>
+        <details><summary>Are prices adjusted for splits and dividends?</summary><div class="faq-body"><p>No. Prices are as the exchange reports them, not adjusted for splits, bonus shares or dividends. Keep that in mind for long backtests.</p></div></details>
+        <details><summary>Can I use it in a commercial project?</summary><div class="faq-body"><p>The code is MIT licensed, so yes. The underlying data comes from the exchange, so check its terms for your use.</p></div></details>
+        <details><summary>Which tool should I start with?</summary><div class="faq-body"><p>Writing Python? Use the library. Building an app or a spreadsheet in another language? Use the REST API. Not a programmer? Connect it to Claude and ask questions.</p></div></details>
       </div>
     </div>
   </section>
