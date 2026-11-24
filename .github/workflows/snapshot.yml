@@ -29,8 +29,13 @@ jobs:
         with:
           python-version: "3.12"
 
+      # Install the latest GitHub release of psxdata rather than PyPI, so the page always uses
+      # the newest tagged library even if a PyPI upload lags behind.
       - name: Install psxdata
-        run: pip install psxdata
+        run: |
+          tag=$(curl -fsSL https://api.github.com/repos/psxdata/psxdata/releases/latest | python -c "import json,sys; print(json.load(sys.stdin)['tag_name'])")
+          echo "Installing psxdata $tag"
+          pip install "psxdata @ git+https://github.com/psxdata/psxdata@$tag"
 
       - name: Build snapshot
         run: python scripts/snapshot.py
