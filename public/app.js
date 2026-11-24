@@ -233,14 +233,52 @@
   }
 
   // Same shape the REST API returns for GET /stocks/{symbol}/quote, trimmed to the useful fields.
+  // Rendered like an editor: one <span class="l"> per line (CSS numbers them) with token colors.
   function fillRest(q, generatedAt) {
-    const keys = ["symbol", "sector_name", "price", "change_pct", "change_1y_pct", "pe_ratio", "dividend_yield", "market_cap"];
+    const keys = ["symbol", "sector_name", "price", "change_pct", "change_1y_pct", "pe_ratio", "dividend_yield", "market_cap", "traded_today"];
     const esc = (s) => String(s).replace(/[&<>]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" })[c]);
-    const val = (v) => (typeof v === "string" ? `<span class="s">"${esc(v)}"</span>` : esc(v));
-    const lines = keys.filter((k) => k in q).map((k) => `    <span class="k">"${k}"</span>: ${val(q[k])}`);
-    document.getElementById("rest-json").innerHTML =
-      `{\n  <span class="k">"data"</span>: {\n${lines.join(",\n")},\n    …\n  },\n` +
-      `  <span class="k">"meta"</span>: { <span class="k">"timestamp"</span>: ${val(generatedAt)}, … }\n}`;
+    const p = (s) => `<span class="p">${s}</span>`;
+    const key = (k) => `<span class="k">"${esc(k)}"</span>${p(":")} `;
+    const val = (v) => {
+      if (typeof v === "string") return `<span class="s">"${esc(v)}"</span>`;
+      if (typeof v === "number") return `<span class="n">${v}</span>`;
+      return `<span class="b">${esc(v)}</span>`; // true, false, null
+    };
+    const fields = keys.filter((k) => k in q);
+    const lines = [
+      p("{"),
+      `  ${key("data")}${p("{")}`,
+      ...fields.map((k, i) => `    ${key(k)}${val(q[k])}${i < fields.length - 1 ? p(",") : ""}`),
+      `  ${p("},")}`,
+      `  ${key("meta")}${p("{")}`,
+      `    ${key("timestamp")}${val(generatedAt)}${p(",")}`,
+      `    ${key("cached")}${val(true)}`,
+      `  ${p("}")}`,
+      p("}"),
+    ];
+    document.getElementById("rest-json").innerHTML = lines.map((l) => `<span class="l">${l}</span>`).join("");
+  }
+
+  /* ---------- Live GitHub star count ----------
+     The snapshot carries yesterday's count as a fallback; the browser asks GitHub for the current
+     one (unauthenticated, 60 requests an hour per visitor IP) and caches it for 10 minutes. */
+  function liveStars() {
+    const el = document.querySelector('.stars[data-stat="stats.github_stars"]');
+    if (!el) return;
+    const KEY = "psxdata-stars", TTL = 10 * 60 * 1000;
+    const show = (n) => { el.textContent = fmt.stars(n); el.hidden = false; };
+    try {
+      const c = JSON.parse(sessionStorage.getItem(KEY) || "null");
+      if (c && Date.now() - c.t < TTL) return show(c.n);
+    } catch (e) {}
+    fetch("https://api.github.com/repos/psxdata/psxdata", { headers: { Accept: "application/vnd.github+json" } })
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(r.status))))
+      .then((repo) => {
+        if (typeof repo.stargazers_count !== "number") return;
+        show(repo.stargazers_count);
+        try { sessionStorage.setItem(KEY, JSON.stringify({ n: repo.stargazers_count, t: Date.now() })); } catch (e) {}
+      })
+      .catch(() => {}); // keep the snapshot's count
   }
 
   fetch("/data/snapshot.json", { cache: "no-cache" })
@@ -252,6 +290,7 @@
       if (snap.dividends) fillDividends(snap.dividends);
       if (snap.quote) fillRest(snap.quote, snap.generated_at);
     })
+    .finally(liveStars)
     .catch(() => {
       chart.innerHTML = '<div class="chart-empty">Market data is unavailable right now.</div>';
       document.getElementById("div-rows").innerHTML = "<tr><td colspan=\"5\">Unavailable right now.</td></tr>";
