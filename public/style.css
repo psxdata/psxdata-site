@@ -249,6 +249,8 @@ h3{font-size:16px;line-height:1.35;font-weight:600;margin:0 0 var(--s2)}
 @media (min-width:900px){.panel{grid-template-columns:260px 1fr;gap:var(--s7);padding:var(--s6)}}
 @media (min-width:1100px){.panel{grid-template-columns:300px 1fr}}
 .panel-text p{margin:0 0 var(--s4);color:var(--muted)}
+.panel-cta{margin:0 0 var(--s4)}
+.btn.small{font-size:14px;padding:9px 16px}
 .panel-links{display:flex;flex-wrap:wrap;gap:var(--s4);font-size:14px;color:var(--text)!important}
 .panel-out{min-width:0}
 .out-label{margin:0 0 var(--s3);font-size:13px;color:var(--muted)}
