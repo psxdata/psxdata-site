@@ -82,7 +82,7 @@ def dividend_table(screener: pd.DataFrame, kse_symbols: set[str]) -> list[dict]:
     return [
         {
             "symbol": r.symbol,
-            "sector": str(r.sector_name).title(),
+            "sector": str(getattr(r, "sector_name", None) or r.sector).title(),
             "price": round(float(r.price), 2),
             "dividend_yield": round(float(r.dividend_yield), 2),
             "pe_ratio": None if pd.isna(r.pe_ratio) else round(float(r.pe_ratio), 2),
